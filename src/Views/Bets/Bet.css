@@ -32,10 +32,35 @@ p.space2 {
   margin-top: 2em;
 }
 
-.botones {
-  width: 50%;
-}
-
 .boton {
   margin-top: 15px;
+}
+
+.bots1 {
+  width: 100%;
+}
+
+.adjust {
+  display: flex;
+  justify-content: center;
+}
+
+.cants {
+  margin-left: 150px;
+}
+
+.cont {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row; /* make main axis horizontal (default setting) */
+  justify-content: center; /* center items horizontally, in this case */
+  align-items: center; /* center items vertically, in this case */
+  height: fit-content;
+}
+
+.val {
+  margin-left: 10px;
+}
+.adjust {
+  margin-left: 15px;
 }
