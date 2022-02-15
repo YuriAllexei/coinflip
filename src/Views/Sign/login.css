@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@100&display=swap");
+
+.texto {
+  text-align: center;
+  font-family: "Roboto Serif", sans-serif;
+}
+
+.welcome {
+  margin-top: 3em;
+}
+
+.centerBut {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}

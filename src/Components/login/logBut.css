@@ -1,5 +1,7 @@
-.wanortu {
+.boton {
   background-color: #d303fc;
   color: white;
   border: 2px solid #00ff00;
+  width: 210px;
+  height: 50px;
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { getWallet, CONTRACT_ID } from "../../utils/functions";
+import "./logBut.css";
 
 function LoginButton(props) {
   const [wallet, setWallet] = useState();
@@ -36,7 +37,9 @@ function LoginButton(props) {
 
   return (
     <div className="">
-      <button onClick={() => login()}>Log in</button>
+      <button className="boton" onClick={() => login()}>
+        Log in
+      </button>
     </div>
   );
 }
