@@ -26,11 +26,7 @@ p.space {
 }
 
 p.space2 {
-  word-spacing: 30px;
-}
-
-.title {
-  margin-top: 2em;
+  word-spacing: 20px;
 }
 
 .boton {
@@ -64,4 +60,18 @@ p.space2 {
 }
 .adjust {
   margin-left: 15px;
+}
+
+.cont2 {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row; /* make main axis horizontal (default setting) */
+  justify-content: end; /* center items horizontally, in this case */
+  align-items: center; /* center items vertically, in this case */
+  height: fit-content;
+}
+
+.logOut {
+  background-color: rgb(229, 255, 0);
+  border: 2px solid rgb(153, 97, 6);
 }

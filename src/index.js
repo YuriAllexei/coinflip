@@ -1,21 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
-import App from "./App";
-import { Bet } from "./Views/Bets/Bet";
 
-import Login from "./Views/Sign/login";
+import { Rutas } from "./Router/Router";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="login" element={<Login />} />
-        <Route path="bet" element={<Bet />} />
-      </Routes>
-    </BrowserRouter>
+    <Rutas />
   </React.StrictMode>,
   document.getElementById("root")
 );

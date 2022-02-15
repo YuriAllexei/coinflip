@@ -5,14 +5,21 @@ import "../Bets/Bet.css";
 
 import { coinFlip, getWallet } from "../../utils/functions";
 import { Res } from "../../Components/Resultado/Res";
+import { useNavigate } from "react-router-dom";
 
 const balance = 14.45;
 
-export const Bet = () => {
+export const Bet = ({ sign, setSign }) => {
+  let navigate = useNavigate();
+
+  if (!sign) {
+    navigate("/login");
+  }
+
   const [wallet, setWallet] = useState();
   const [accountId, setAccountId] = useState();
   const [resultado, setResultado] = useState(true);
-  const [tipo, setTipo] = useState("win");
+  const [tipo, setTipo] = useState("loss");
 
   useEffect(() => {
     (async () => {
@@ -29,6 +36,11 @@ export const Bet = () => {
 
   return (
     <div className="BetGen">
+      <div className="cont2">
+        <button className="logOut" onClick={() => setSign(!sign)}>
+          LogOut
+        </button>
+      </div>
       <Container className="botones">
         <Row className="justify-content-center">
           <h1 className="texto title">
@@ -40,8 +52,8 @@ export const Bet = () => {
           <h3 className="texto balance"> My balance: {balance} Near</h3>
         </Row>
         <Row className="justify-content-center">
-          <h2 className="texto">
-            <p className="space2">{`I CHOOSE`}</p>{" "}
+          <h2 className="texto ajuste">
+            <p className="space2 ">{`I CHOOSE`}</p>{" "}
           </h2>
         </Row>
         <div className="cont">

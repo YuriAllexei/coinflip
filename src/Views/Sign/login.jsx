@@ -1,10 +1,17 @@
 import LoginButton from "../../Components/login/login_button";
 import { Col, Container, Row } from "react-bootstrap";
 import "../Sign/login.css";
+import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({ sign, setSign }) {
+  let navigate = useNavigate();
+  if (sign) {
+    navigate("/bet");
+  }
+
   return (
     <div>
+      <button onClick={() => setSign(!sign)}>Entrar</button>
       <Container>
         <Row>
           <Col className="one">
