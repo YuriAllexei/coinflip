@@ -12,7 +12,7 @@ export const Bet = () => {
   const [wallet, setWallet] = useState();
   const [accountId, setAccountId] = useState();
   const [resultado, setResultado] = useState(true);
-  const [tipo, setTipo] = useState("loss");
+  const [tipo, setTipo] = useState("win");
 
   useEffect(() => {
     (async () => {
