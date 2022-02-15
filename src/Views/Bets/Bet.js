@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { ButtonGeneral } from "../../Components/ButtonGen/ButtonGeneral";
 import "../Bets/Bet.css";
 
+import { coinFlip, getWallet } from "../../utils/functions";
+
 const balance = 14.45;
 
 export const Bet = () => {
+  const [wallet, setWallet] = useState();
+  const [accountId, setAccountId] = useState();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const tempWallet = await getWallet();
+        console.log(tempWallet);
+        setWallet(tempWallet);
+        setAccountId(tempWallet.getAccountId());
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, []);
+
   return (
     <div className="BetGen">
       <Container className="botones">
@@ -72,11 +90,14 @@ export const Bet = () => {
           </Row>
         </Container>
         <Row className="justify-content-center">
-          <ButtonGeneral
+          <button
             className="boton"
             variante={"primary"}
             filler={`DOUBLE OR NOTHING!`}
-          ></ButtonGeneral>
+            onClick={() => coinFlip(wallet)}
+          >
+            Double or nothing
+          </button>
         </Row>
       </Container>
     </div>

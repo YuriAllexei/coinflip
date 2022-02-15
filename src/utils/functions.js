@@ -1,7 +1,7 @@
 import { keyStores, connect, WalletConnection, utils } from "near-api-js";
 import BN from "bn.js";
 
-export const CONTRACT_ID = "dev-1634742185963-52355839606274";
+export const CONTRACT_ID = "dev-1644545119408-47328004210213";
 export const gas = new BN("70000000000000");
 
 export const getWallet = async () => {
@@ -15,13 +15,22 @@ export const getWallet = async () => {
   return wallet;
 };
 
-// export const coinFlip = async (wallet, opcion) => {
-//     const response = await wallet.account().functionCall({
-//       contractId: CONTRACT_ID,
-//       methodName: "registerCompany",
-//       args: company,
-//       gas,
+export const coinFlip = (wallet) => {
+  console.log("HOLA");
+  const response = wallet
+    .account()
+    .functionCall({
+      contractId: CONTRACT_ID,
+      deposit: new BN("1"),
+      methodName: "coinFlip",
+      gas,
+    })
+    .then(() => {
+      console.log("Llamada exitosa");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
-//     });
-//     return response;
-//   };
+  return response;
+};
