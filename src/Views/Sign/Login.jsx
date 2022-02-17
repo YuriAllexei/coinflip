@@ -4,10 +4,10 @@ import "../Sign/login.css";
 import { useNavigate } from "react-router-dom";
 
 function Login({ sign, setSign }) {
-  let navigate = useNavigate();
-  if (sign) {
+  const navigate = useNavigate();
+  /*if (sign) {
     navigate("/bet");
-  }
+  }*/
 
   return (
     <div>
@@ -21,7 +21,7 @@ function Login({ sign, setSign }) {
         <Row>
           <Col className="two">
             <div className="centerBut">
-              <LoginButton className="log" />
+              <LoginButton className="log" setSignIn={setSign} />
             </div>
           </Col>
         </Row>

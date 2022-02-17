@@ -2,37 +2,52 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { ButtonGeneral } from "../../Components/ButtonGen/ButtonGeneral";
 import "../Bets/Bet.css";
+import Big from "big.js";
 
 import { coinFlip, getWallet } from "../../utils/functions";
 import { Res } from "../../Components/Resultado/Res";
 import { useNavigate } from "react-router-dom";
 
-const balance = 14.45;
-
 export const Bet = ({ sign, setSign }) => {
   let navigate = useNavigate();
 
-  if (!sign) {
+  /*if (!sign) {
     navigate("/login");
-  }
+  }*/
 
   const [wallet, setWallet] = useState();
   const [accountId, setAccountId] = useState();
   const [resultado, setResultado] = useState(true);
   const [tipo, setTipo] = useState("loss");
+  const [balance, setBalance] = useState(0.0);
 
   useEffect(() => {
     (async () => {
       try {
         const tempWallet = await getWallet();
-        console.log(tempWallet);
         setWallet(tempWallet);
+        console.log(await tempWallet.account().state());
         setAccountId(tempWallet.getAccountId());
       } catch (e) {
         console.log(e);
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log(wallet);
+        if (wallet !== undefined) {
+          setBalance(
+            ((await wallet.account().state()).amount / 10 ** 24).toFixed(2)
+          );
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  }, [wallet]);
 
   return (
     <div className="BetGen">

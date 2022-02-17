@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Bet } from "../Views/Bets/Bet";
-import Login from "../Views/Sign/login";
+import Login from "../Views/Sign/Login";
 
 export const Rutas = () => {
   const [sign, setSign] = useState(false);

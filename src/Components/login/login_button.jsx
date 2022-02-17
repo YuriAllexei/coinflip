@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { keyStores } from "near-api-js";
 
 import { getWallet, CONTRACT_ID } from "../../utils/functions";
 import "./logBut.css";
 
-function LoginButton(props) {
+function LoginButton({ setSignIn }) {
+  const navigate = useNavigate();
   const [wallet, setWallet] = useState();
   const [accountId, setAccountId] = useState("");
   const [infoMessage, setInfoMessage] = useState([]);
@@ -21,6 +24,21 @@ function LoginButton(props) {
         console.log(e);
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log(
+        new keyStores.BrowserLocalStorageKeyStore().localStorage.length
+      );
+      if (
+        new keyStores.BrowserLocalStorageKeyStore().localStorage.length !== 0
+      ) {
+        navigate("/bet");
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const login = async () => {

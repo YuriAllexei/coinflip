@@ -11,12 +11,13 @@ export const getWallet = async () => {
     nodeUrl: "https://rpc.testnet.near.org",
     walletUrl: "https://wallet.testnet.near.org",
   });
-  const wallet = new WalletConnection(near, "yurimexbalia");
+  console.log("dajda");
+  console.log(near);
+  const wallet = new WalletConnection(near, "");
   return wallet;
 };
 
 export const coinFlip = (wallet) => {
-  console.log("HOLA");
   const response = wallet
     .account()
     .functionCall({
