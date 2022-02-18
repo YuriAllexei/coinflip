@@ -1,14 +1,8 @@
 import LoginButton from "../../Components/login/login_button";
 import { Col, Container, Row } from "react-bootstrap";
 import "../Sign/login.css";
-import { useNavigate } from "react-router-dom";
 
 function Login({ sign, setSign }) {
-  const navigate = useNavigate();
-  /*if (sign) {
-    navigate("/bet");
-  }*/
-
   return (
     <div>
       <button onClick={() => setSign(!sign)}>Entrar</button>

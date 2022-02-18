@@ -5,20 +5,17 @@ import "../Bets/Bet.css";
 
 import { coinFlip, getWallet } from "../../utils/functions";
 import { Res } from "../../Components/Resultado/Res";
-import { useNavigate } from "react-router-dom";
 import { verificador } from "../../utils/verificador";
 
 export const Bet = ({ sign, setSign }) => {
-  let navigate = useNavigate();
-
   // if (!sign) {
   //   navigate("/login");
   // }
+
   const [wallet, setWallet] = useState();
   const [premium, setpremium] = useState(null);
   const [accountId, setAccountId] = useState();
   const [resultado, setResultado] = useState();
-  const [tipo, setTipo] = useState("loss");
   const [balance, setBalance] = useState(0.0);
   const [cantidad, setcantidad] = useState(null);
   const [opcion, setopcion] = useState(null);
