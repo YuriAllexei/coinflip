@@ -9,12 +9,6 @@ import { Res } from "../../Components/Resultado/Res";
 import { useNavigate } from "react-router-dom";
 
 export const Bet = ({ sign, setSign }) => {
-  let navigate = useNavigate();
-
-  /*if (!sign) {
-    navigate("/login");
-  }*/
-
   const [wallet, setWallet] = useState();
   const [accountId, setAccountId] = useState();
   const [resultado, setResultado] = useState(true);
@@ -26,7 +20,6 @@ export const Bet = ({ sign, setSign }) => {
       try {
         const tempWallet = await getWallet();
         setWallet(tempWallet);
-        console.log(await tempWallet.account().state());
         setAccountId(tempWallet.getAccountId());
       } catch (e) {
         console.log(e);
@@ -37,7 +30,6 @@ export const Bet = ({ sign, setSign }) => {
   useEffect(() => {
     (async () => {
       try {
-        console.log(wallet);
         if (wallet !== undefined) {
           setBalance(
             ((await wallet.account().state()).amount / 10 ** 24).toFixed(2)
