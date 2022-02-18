@@ -17,7 +17,7 @@ export const Bet = ({ sign, setSign }) => {
   const [wallet, setWallet] = useState();
   const [premium, setpremium] = useState(null);
   const [accountId, setAccountId] = useState();
-  const [resultado, setResultado] = useState(true);
+  const [resultado, setResultado] = useState();
   const [tipo, setTipo] = useState("loss");
   const [balance, setBalance] = useState(0.0);
   const [cantidad, setcantidad] = useState(null);
@@ -27,6 +27,10 @@ export const Bet = ({ sign, setSign }) => {
     const _dueños = await verificador();
     console.log(_dueños);
   }
+
+  useEffect(() => {
+    console.log(resultado);
+  }, [resultado]);
 
   useEffect(() => {
     (async () => {
@@ -79,7 +83,9 @@ export const Bet = ({ sign, setSign }) => {
           </h1>
           <h2 className="texto title">{`Bienvenido ${accountId}!`}</h2>
         </Row>
-        <div className="cont">{resultado ? <Res tipo={tipo} /> : <></>}</div>
+        <div className="cont">
+          {resultado ? <Res tipo={resultado} /> : <></>}
+        </div>
         <Row className="justify-content-center">
           <h3 className="texto balance"> My balance: {balance} Near</h3>
         </Row>
@@ -94,7 +100,7 @@ export const Bet = ({ sign, setSign }) => {
               func={setopcion}
               variante={`primary`}
               filler={`1`}
-              val={1}
+              val={0}
             ></ButtonGeneral>
           </div>
 
@@ -107,7 +113,7 @@ export const Bet = ({ sign, setSign }) => {
               func={setopcion}
               variante={`primary`}
               filler={2}
-              val={2}
+              val={1}
             ></ButtonGeneral>
           </div>
         </div>
@@ -152,6 +158,7 @@ export const Bet = ({ sign, setSign }) => {
             variante={"primary"}
             filler={`${premium === null ? "Verificar" : "DOUBLE OR NOTHING!"}`}
             onClick={async () => {
+              console.log(resultado);
               if (premium === null) {
                 let dueños = await verificador();
                 dueños.includes(accountId)
@@ -159,7 +166,13 @@ export const Bet = ({ sign, setSign }) => {
                   : setpremium(false);
               } else {
                 if (opcion && cantidad) {
-                  coinFlip(wallet);
+                  await coinFlip(
+                    wallet,
+                    cantidad,
+                    opcion,
+                    premium,
+                    setResultado
+                  );
                 } else {
                   alert("Por favor elige cantidad y opcion de apuesta.");
                 }

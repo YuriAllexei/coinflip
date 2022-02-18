@@ -28,27 +28,27 @@ function LoginButton({ setSignIn }) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log(
-        new keyStores.BrowserLocalStorageKeyStore().localStorage.length
-      );
       if (
         new keyStores.BrowserLocalStorageKeyStore().localStorage.length !== 0
       ) {
-        navigate("/bet");
+        if (loading === false) {
+          navigate("/bet");
+        }
       }
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [loading]);
 
-  const login = async () => {
+  const login = () => {
     setLoading(true);
     try {
-      await wallet.requestSignIn(CONTRACT_ID, "Flip coin");
+      wallet.requestSignIn(CONTRACT_ID, "Flip coin").then(() => {
+        setLoading(false);
+      });
     } catch (e) {
       console.log(e);
     }
-    setLoading(false);
     // eslint-disable-next-line no-restricted-globals
     //location.reload();
   };

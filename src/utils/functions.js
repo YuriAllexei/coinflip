@@ -11,27 +11,38 @@ export const getWallet = async () => {
     nodeUrl: "https://rpc.testnet.near.org",
     walletUrl: "https://wallet.testnet.near.org",
   });
-  console.log("dajda");
-  console.log(near);
   const wallet = new WalletConnection(near, "");
   return wallet;
 };
 
-export const coinFlip = (wallet) => {
+export const coinFlip = (wallet, cantidad, opcion, premium, setResultado) => {
+  let resultado;
+  if (cantidad === 0.25) {
+    cantidad = "250000000000000000000000";
+  } else if (cantidad === 0.5) {
+    cantidad = "500000000000000000000000";
+  } else {
+    cantidad = "1000000000000000000000000";
+  }
   const response = wallet
     .account()
     .functionCall({
       contractId: CONTRACT_ID,
-      deposit: new BN("1"),
+      deposit: new BN(cantidad),
       methodName: "coinFlip",
+      args: {
+        opcion,
+        premium,
+      },
       gas,
     })
-    .then(() => {
-      console.log("Llamada exitosa");
+    .then((response) => {
+      setResultado(response["receipts_outcome"][0]["outcome"]["logs"][0]);
+      resultado = response["receipts_outcome"][0]["outcome"]["logs"][0];
     })
     .catch((err) => {
       console.log(err);
     });
 
-  return response;
+  return resultado;
 };
