@@ -1,10 +1,16 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import "../ButtonGen/ButtonGeneral.css";
-export const ButtonGeneral = ({ filler, variante }) => {
+export const ButtonGeneral = ({ filler, variante, func, val }) => {
   return (
     <>
-      <Button className="wanortu" variant={`${variante}`}>
+      <Button
+        onClick={() => {
+          func(val);
+        }}
+        className="wanortu"
+        variant={`${variante}`}
+      >
         {`${filler}`}{" "}
       </Button>
     </>
