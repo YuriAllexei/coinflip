@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { ButtonGeneral } from "../../Components/ButtonGen/ButtonGeneral";
 import "../Bets/Bet.css";
-import Big from "big.js";
 
 import { coinFlip, getWallet } from "../../utils/functions";
 import { Res } from "../../Components/Resultado/Res";
 import { useNavigate } from "react-router-dom";
+import { verificador } from "../../utils/verificador";
 
 export const Bet = ({ sign, setSign }) => {
+  let navigate = useNavigate();
+
+  // if (!sign) {
+  //   navigate("/login");
+  // }
   const [wallet, setWallet] = useState();
+  const [premium, setpremium] = useState(null);
   const [accountId, setAccountId] = useState();
   const [resultado, setResultado] = useState(true);
   const [tipo, setTipo] = useState("loss");
   const [balance, setBalance] = useState(0.0);
+  const [cantidad, setcantidad] = useState(null);
+  const [opcion, setopcion] = useState(null);
+
+  async function anonima() {
+    const _dueños = await verificador();
+    console.log(_dueños);
+  }
 
   useEffect(() => {
     (async () => {
@@ -26,6 +39,10 @@ export const Bet = ({ sign, setSign }) => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    console.log(premium);
+  }, [premium]);
 
   useEffect(() => {
     (async () => {
@@ -43,6 +60,13 @@ export const Bet = ({ sign, setSign }) => {
 
   return (
     <div className="BetGen">
+      <button
+        onClick={() => {
+          anonima();
+        }}
+      >
+        Check
+      </button>
       <div className="cont2">
         <button className="logOut" onClick={() => setSign(!sign)}>
           LogOut
@@ -53,6 +77,7 @@ export const Bet = ({ sign, setSign }) => {
           <h1 className="texto title">
             <p className="space">WANORTU CASINO</p>{" "}
           </h1>
+          <h2 className="texto title">{`Bienvenido ${accountId}!`}</h2>
         </Row>
         <div className="cont">{resultado ? <Res tipo={tipo} /> : <></>}</div>
         <Row className="justify-content-center">
@@ -65,7 +90,12 @@ export const Bet = ({ sign, setSign }) => {
         </Row>
         <div className="cont">
           <div className="adjust">
-            <ButtonGeneral variante={`primary`} filler={"1"}></ButtonGeneral>
+            <ButtonGeneral
+              func={setopcion}
+              variante={`primary`}
+              filler={`1`}
+              val={1}
+            ></ButtonGeneral>
           </div>
 
           <div className="adjust">
@@ -73,7 +103,12 @@ export const Bet = ({ sign, setSign }) => {
           </div>
 
           <div className="adjust">
-            <ButtonGeneral variante={`primary`} filler={"2"}></ButtonGeneral>
+            <ButtonGeneral
+              func={setopcion}
+              variante={`primary`}
+              filler={2}
+              val={2}
+            ></ButtonGeneral>
           </div>
         </div>
 
@@ -86,7 +121,9 @@ export const Bet = ({ sign, setSign }) => {
             <ButtonGeneral
               className="botonVal"
               variante={`primary`}
+              val={0.25}
               filler={"0.25 NEAR"}
+              func={setcantidad}
             ></ButtonGeneral>
           </div>
           <div className="val">
@@ -94,13 +131,17 @@ export const Bet = ({ sign, setSign }) => {
               className="botonVal"
               variante={`primary`}
               filler={"0.5 NEAR"}
+              val={0.5}
+              func={setcantidad}
             ></ButtonGeneral>
           </div>
           <div className="val">
             <ButtonGeneral
               className="botonVal"
               variante={`primary`}
+              val={1}
               filler={"1 NEAR"}
+              func={setcantidad}
             ></ButtonGeneral>
           </div>
         </div>
@@ -109,10 +150,23 @@ export const Bet = ({ sign, setSign }) => {
           <button
             className="boton"
             variante={"primary"}
-            filler={`DOUBLE OR NOTHING!`}
-            onClick={() => coinFlip(wallet)}
+            filler={`${premium === null ? "Verificar" : "DOUBLE OR NOTHING!"}`}
+            onClick={async () => {
+              if (premium === null) {
+                let dueños = await verificador();
+                dueños.includes(accountId)
+                  ? setpremium(true)
+                  : setpremium(false);
+              } else {
+                if (opcion && cantidad) {
+                  coinFlip(wallet);
+                } else {
+                  alert("Por favor elige cantidad y opcion de apuesta.");
+                }
+              }
+            }}
           >
-            Double or nothing
+            {`${premium === null ? "Verificar" : "DOUBLE OR NOTHING!"}`}
           </button>
         </Row>
       </Container>
