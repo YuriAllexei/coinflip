@@ -163,12 +163,14 @@ export const Bet = ({ sign, setSign }) => {
                   : setpremium(false);
               } else {
                 if (opcion && cantidad) {
-                  await coinFlip(
-                    wallet,
-                    cantidad,
-                    opcion,
-                    premium,
-                    setResultado
+                  console.log(
+                    await coinFlip(
+                      wallet,
+                      cantidad,
+                      opcion,
+                      premium,
+                      setResultado
+                    )
                   );
                 } else {
                   alert("Por favor elige cantidad y opcion de apuesta.");

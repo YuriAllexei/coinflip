@@ -1,4 +1,4 @@
-import { keyStores, connect, WalletConnection, utils } from "near-api-js";
+import { keyStores, connect, WalletConnection, providers } from "near-api-js";
 import BN from "bn.js";
 
 export const CONTRACT_ID = "wanortu.testnet";
@@ -15,7 +15,13 @@ export const getWallet = async () => {
   return wallet;
 };
 
-export const coinFlip = (wallet, cantidad, opcion, premium, setResultado) => {
+export const coinFlip = async (
+  wallet,
+  cantidad,
+  opcion,
+  premium,
+  setResultado
+) => {
   let resultado;
   if (cantidad === 0.25) {
     cantidad = "250000000000000000000000";
@@ -25,25 +31,17 @@ export const coinFlip = (wallet, cantidad, opcion, premium, setResultado) => {
     cantidad = "1000000000000000000000000";
   }
 
-  const response = wallet
-    .account()
-    .functionCall(
-      CONTRACT_ID,
-      "coinFlip",
-      {
-        opcion,
-        premium,
-      },
-      gas,
-      new BN(cantidad)
-    )
-    .then((response) => {
-      setResultado(response["receipts_outcome"][0]["outcome"]["logs"][0]);
-      resultado = response["receipts_outcome"][0]["outcome"]["logs"][0];
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const response = await wallet.account().functionCall(
+    CONTRACT_ID,
+    "coinFlip",
+    {
+      opcion,
+      premium,
+    },
+    gas,
+    new BN(cantidad)
+  );
 
-  return resultado;
+  console.log(response);
+  return response;
 };
