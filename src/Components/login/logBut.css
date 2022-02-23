@@ -8,5 +8,6 @@
 
 .boton:hover {
   background-color: firebrick;
+  cursor: pointer;
   border: 2px solid lightseagreen;
 }

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row } from "react-bootstrap";
-import { ButtonGeneral } from "../../Components/ButtonGen/ButtonGeneral";
 import "../Bets/Bet.css";
 
-import { coinFlip, getWallet } from "../../utils/functions";
+import { coinFlip, contractBalance, getWallet } from "../../utils/functions";
 import { Res } from "../../Components/Resultado/Res";
 import { verificador } from "../../utils/verificador";
+import { useNavigate } from "react-router-dom";
 
 export const Bet = ({ sign, setSign }) => {
   // if (!sign) {
   //   navigate("/login");
   // }
 
+  const navigate = useNavigate();
   const [wallet, setWallet] = useState();
   const [premium, setpremium] = useState(null);
   const [accountId, setAccountId] = useState();
@@ -19,11 +19,18 @@ export const Bet = ({ sign, setSign }) => {
   const [balance, setBalance] = useState(0.0);
   const [cantidad, setcantidad] = useState(null);
   const [opcion, setopcion] = useState(null);
+  const [varoContrato, setVaroContrato] = useState(0);
+  const [reload, setReload] = useState(false);
+  const [login, setlogin] = useState(false);
 
   async function anonima() {
     const _dueños = await verificador();
     console.log(_dueños);
   }
+
+  const signOut = () => {
+    wallet.signOut();
+  };
 
   useEffect(() => {
     console.log(resultado);
@@ -35,6 +42,9 @@ export const Bet = ({ sign, setSign }) => {
         const tempWallet = await getWallet();
         setWallet(tempWallet);
         setAccountId(tempWallet.getAccountId());
+        let balanceContrato = await (await contractBalance()).toFixed(2);
+        balanceContrato = Number(balanceContrato);
+        setVaroContrato(balanceContrato);
       } catch (e) {
         console.log(e);
       }
@@ -61,127 +71,151 @@ export const Bet = ({ sign, setSign }) => {
 
   return (
     <div className="BetGen">
-      <button
-        onClick={() => {
-          anonima();
-        }}
-      >
-        Check
-      </button>
-      <div className="cont2">
-        <button className="logOut" onClick={() => setSign(!sign)}>
-          LogOut
-        </button>
-      </div>
-      <Container className="botones">
-        <Row className="justify-content-center">
-          <h1 className="texto title">
-            <p className="space">WANORTU CASINO</p>{" "}
-          </h1>
-          <h2 className="texto title">{`Bienvenido ${accountId}!`}</h2>
-        </Row>
-        <div className="cont">
-          {resultado ? <Res tipo={resultado} /> : <></>}
-        </div>
-        <Row className="justify-content-center">
-          <h3 className="texto balance"> My balance: {balance} Near</h3>
-        </Row>
-        <Row className="justify-content-center">
-          <h2 className="texto ajuste">
-            <p className="space2 ">{`I CHOOSE`}</p>{" "}
-          </h2>
-        </Row>
-        <div className="cont">
-          <div className="adjust">
-            <ButtonGeneral
-              func={setopcion}
-              variante={`primary`}
-              filler={`1`}
-              val={0}
-            ></ButtonGeneral>
-          </div>
-
-          <div className="adjust">
-            <h3 className="texto">or</h3>
-          </div>
-
-          <div className="adjust">
-            <ButtonGeneral
-              func={setopcion}
-              variante={`primary`}
-              filler={2}
-              val={1}
-            ></ButtonGeneral>
-          </div>
-        </div>
-
-        <div className="cont">
-          <h2 className="texto">FOR</h2>
-        </div>
-
-        <div className="cont">
-          <div className="val">
-            <ButtonGeneral
-              className="botonVal"
-              variante={`primary`}
-              val={0.25}
-              filler={"0.25 NEAR"}
-              func={setcantidad}
-            ></ButtonGeneral>
-          </div>
-          <div className="val">
-            <ButtonGeneral
-              className="botonVal"
-              variante={`primary`}
-              filler={"0.5 NEAR"}
-              val={0.5}
-              func={setcantidad}
-            ></ButtonGeneral>
-          </div>
-          <div className="val">
-            <ButtonGeneral
-              className="botonVal"
-              variante={`primary`}
-              val={1}
-              filler={"1 NEAR"}
-              func={setcantidad}
-            ></ButtonGeneral>
-          </div>
-        </div>
-
-        <Row className="justify-content-center">
+      <div className="container logout">
+        <div>
           <button
-            className="boton"
-            variante={"primary"}
-            filler={`${premium === null ? "Verificar" : "DOUBLE OR NOTHING!"}`}
-            onClick={async () => {
-              console.log(resultado);
-              if (premium === null) {
-                let dueños = await verificador();
-                dueños.includes(accountId)
-                  ? setpremium(true)
-                  : setpremium(false);
-              } else {
-                if (opcion && cantidad) {
-                  console.log(
-                    await coinFlip(
-                      wallet,
-                      cantidad,
-                      opcion,
-                      premium,
-                      setResultado
-                    )
-                  );
-                } else {
-                  alert("Por favor elige cantidad y opcion de apuesta.");
-                }
-              }
+            className="signOut"
+            onClick={() => {
+              signOut();
+              setSign(!sign);
+              localStorage.clear();
+              setReload(true);
+              navigate("/login");
             }}
           >
-            {`${premium === null ? "Verificar" : "DOUBLE OR NOTHING!"}`}
+            LogOut
           </button>
-        </Row>
-      </Container>
+        </div>
+        <div>
+          <button className="login" onc></button>
+        </div>
+      </div>
+      <div className="contenido">
+        <div className="container title">
+          <div className="texto">
+            <p className="space nombre">WANORTU CASINO</p>{" "}
+          </div>
+          <div className=" title">
+            <p className="texto title">{`Bienvenido ${accountId}!`}</p>
+          </div>
+          <div>{resultado ? <Res tipo={resultado} /> : <></>}</div>
+          <div className="center">
+            <p className="Balance"> My balance: {balance} NEAR</p>
+          </div>
+          <div className="center">
+            <p className="texto Balance contrato">
+              Contract balance: {varoContrato} NEAR
+            </p>
+          </div>
+          <div className="center">
+            <p className="space2 eleccion texto">{`I CHOOSE`}</p> <div></div>
+          </div>
+          <div className="container center opcion">
+            <div>
+              <button
+                className="decision"
+                onClick={() => {
+                  setopcion(1);
+                }}
+              >
+                1
+              </button>
+            </div>
+
+            <div>
+              <p className="texto or">or</p>
+            </div>
+
+            <div>
+              <button
+                className="decision"
+                onClick={() => {
+                  setopcion(2);
+                }}
+              >
+                2
+              </button>
+            </div>
+          </div>
+          <div className="cont">
+            <h2 className="texto">FOR</h2>
+          </div>
+          <div className="container center between apuesta">
+            <div>
+              <button
+                onClick={() => {
+                  setcantidad(0.25);
+                }}
+                className="decision cantidad"
+              >
+                0.25 NEAR
+              </button>
+            </div>
+            <div className="val">
+              <button
+                onClick={() => {
+                  setcantidad(0.5);
+                }}
+                className="decision cantidad"
+              >
+                0.5 NEAR
+              </button>
+            </div>
+            <div className="val">
+              <button
+                onClick={() => {
+                  setcantidad(1);
+                }}
+                className="decision cantidad"
+              >
+                1 NEAR
+              </button>
+            </div>
+          </div>
+          <div className=" container center play">
+            <button
+              className="decision verify"
+              variante={"primary"}
+              filler={`${
+                premium === null ? "Verificar" : "DOUBLE OR NOTHING!"
+              }`}
+              onClick={async () => {
+                console.log(resultado);
+                if (wallet.isSignedIn()) {
+                  if (premium === null) {
+                    let dueños = await verificador();
+                    dueños.includes(accountId)
+                      ? setpremium(true)
+                      : setpremium(false);
+                  } else {
+                    if (!opcion) {
+                      alert("Elige una opción para apostar!!");
+                    } else if (!cantidad) {
+                      alert("Elige una cantidad para apostar!!");
+                    }
+
+                    if (opcion && cantidad) {
+                      console.log(
+                        await coinFlip(
+                          wallet,
+                          cantidad,
+                          opcion,
+                          premium,
+                          setResultado
+                        )
+                      );
+                    }
+                  }
+                } else {
+                  alert("Tienes que hacer Login con tu cuenta de NEAR!!");
+                }
+              }}
+            >
+              {`${premium === null ? "Verificar" : "DOUBLE OR NOTHING!"}`}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
