@@ -8,7 +8,9 @@ import "./logBut.css";
 function LoginButton({ setSignIn }) {
   const navigate = useNavigate();
   const [wallet, setWallet] = useState();
+  //eslint-disable-next-line
   const [accountId, setAccountId] = useState("");
+  //eslint-disable-next-line
   const [infoMessage, setInfoMessage] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +40,7 @@ function LoginButton({ setSignIn }) {
     }, 1000);
 
     return () => clearInterval(intervalId);
+    //eslint-disable-next-line
   }, [loading]);
 
   const login = () => {

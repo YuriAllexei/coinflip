@@ -1,4 +1,4 @@
-import { keyStores, connect, WalletConnection, providers } from "near-api-js";
+import { keyStores, connect, WalletConnection } from "near-api-js";
 import BN from "bn.js";
 import BigNumber from "bignumber.js";
 
@@ -36,14 +36,24 @@ export const contractBalance = async () => {
   return varoNum;
 };
 
-export const coinFlip = async (
-  wallet,
-  cantidad,
-  opcion,
-  premium,
-  setResultado
-) => {
-  let resultado;
+export const greet = async (wallet) => {
+  const hola = await wallet.account().viewFunction(CONTRACT_ID, "helloWorld");
+  console.log(hola);
+};
+
+export const getApuesta = async (wallet, id) => {
+  const res = await wallet.account().viewFunction(
+    CONTRACT_ID,
+    "getGamblePlayer",
+    {
+      id,
+    },
+    gas
+  );
+  return res;
+};
+
+export const coinFlip = async (wallet, cantidad, opcion, premium) => {
   if (cantidad === 0.25) {
     cantidad = "250000000000000000000000";
   } else if (cantidad === 0.5) {
@@ -51,8 +61,7 @@ export const coinFlip = async (
   } else {
     cantidad = "1000000000000000000000000";
   }
-
-  const response = await wallet.account().functionCall(
+  await wallet.account().functionCall(
     CONTRACT_ID,
     "coinFlip",
     {
@@ -62,7 +71,4 @@ export const coinFlip = async (
     gas,
     new BN(cantidad)
   );
-
-  console.log(response);
-  return response;
 };

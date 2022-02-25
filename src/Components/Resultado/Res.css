@@ -1,9 +1,8 @@
-.won {
+.win {
   border: 2px solid white;
   width: 200px;
   height: 60px;
   background-color: greenyellow;
-  text-align: center;
 }
 
 .loss {
@@ -15,5 +14,6 @@
 }
 
 .txt {
-  padding-top: 7%;
+  font-size: 40px;
+  text-align: center;
 }

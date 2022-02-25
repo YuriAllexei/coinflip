@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../Bets/Bet.css";
 
-import { coinFlip, contractBalance, getWallet } from "../../utils/functions";
+import {
+  coinFlip,
+  contractBalance,
+  getApuesta,
+  getWallet,
+} from "../../utils/functions";
 import { Res } from "../../Components/Resultado/Res";
 import { verificador } from "../../utils/verificador";
 import { useNavigate } from "react-router-dom";
@@ -15,26 +20,17 @@ export const Bet = ({ sign, setSign }) => {
   const [wallet, setWallet] = useState();
   const [premium, setpremium] = useState(null);
   const [accountId, setAccountId] = useState();
-  const [resultado, setResultado] = useState();
+
   const [balance, setBalance] = useState(0.0);
   const [cantidad, setcantidad] = useState(null);
   const [opcion, setopcion] = useState(null);
   const [varoContrato, setVaroContrato] = useState(0);
-  const [reload, setReload] = useState(false);
-  const [login, setlogin] = useState(false);
 
-  async function anonima() {
-    const _dueños = await verificador();
-    console.log(_dueños);
-  }
+  const [apuestaAvail, setapuestaAvail] = useState(null);
 
   const signOut = () => {
     wallet.signOut();
   };
-
-  useEffect(() => {
-    console.log(resultado);
-  }, [resultado]);
 
   useEffect(() => {
     (async () => {
@@ -52,10 +48,6 @@ export const Bet = ({ sign, setSign }) => {
   }, []);
 
   useEffect(() => {
-    console.log(premium);
-  }, [premium]);
-
-  useEffect(() => {
     (async () => {
       try {
         if (wallet !== undefined) {
@@ -67,7 +59,23 @@ export const Bet = ({ sign, setSign }) => {
         console.log(e);
       }
     })();
+    //eslint-disable-next-line
   }, [wallet]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (accountId !== undefined) {
+          const avail = await getApuesta(wallet, accountId);
+          setapuestaAvail(avail);
+          console.log(avail);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+    //eslint-disable-next-line
+  }, [accountId]);
 
   return (
     <div className="BetGen">
@@ -79,15 +87,12 @@ export const Bet = ({ sign, setSign }) => {
               signOut();
               setSign(!sign);
               localStorage.clear();
-              setReload(true);
+
               navigate("/login");
             }}
           >
             LogOut
           </button>
-        </div>
-        <div>
-          <button className="login" onc></button>
         </div>
       </div>
       <div className="contenido">
@@ -98,7 +103,13 @@ export const Bet = ({ sign, setSign }) => {
           <div className=" title">
             <p className="texto title">{`Bienvenido ${accountId}!`}</p>
           </div>
-          <div>{resultado ? <Res tipo={resultado} /> : <></>}</div>
+          <div>
+            {apuestaAvail !== "ND" ? (
+              <Res tipo={apuestaAvail} />
+            ) : (
+              <h1>APUESTA CON NOSOTROS!</h1>
+            )}
+          </div>
           <div className="center">
             <p className="Balance"> My balance: {balance} NEAR</p>
           </div>
@@ -115,7 +126,7 @@ export const Bet = ({ sign, setSign }) => {
               <button
                 className="decision"
                 onClick={() => {
-                  setopcion(1);
+                  setopcion(0);
                 }}
               >
                 1
@@ -123,14 +134,14 @@ export const Bet = ({ sign, setSign }) => {
             </div>
 
             <div>
-              <p className="texto or">or</p>
+              <p className="texto or">OR</p>
             </div>
 
             <div>
               <button
                 className="decision"
                 onClick={() => {
-                  setopcion(2);
+                  setopcion(1);
                 }}
               >
                 2
@@ -180,7 +191,6 @@ export const Bet = ({ sign, setSign }) => {
                 premium === null ? "Verificar" : "DOUBLE OR NOTHING!"
               }`}
               onClick={async () => {
-                console.log(resultado);
                 if (wallet.isSignedIn()) {
                   if (premium === null) {
                     let dueños = await verificador();
@@ -188,22 +198,15 @@ export const Bet = ({ sign, setSign }) => {
                       ? setpremium(true)
                       : setpremium(false);
                   } else {
-                    if (!opcion) {
+                    if (opcion === null) {
                       alert("Elige una opción para apostar!!");
                     } else if (!cantidad) {
                       alert("Elige una cantidad para apostar!!");
                     }
 
-                    if (opcion && cantidad) {
-                      console.log(
-                        await coinFlip(
-                          wallet,
-                          cantidad,
-                          opcion,
-                          premium,
-                          setResultado
-                        )
-                      );
+                    if (opcion !== null && cantidad) {
+                      console.log("boom");
+                      coinFlip(wallet, cantidad, opcion, premium);
                     }
                   }
                 } else {

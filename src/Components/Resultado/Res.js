@@ -2,11 +2,11 @@ import React from "react";
 import "./Res.css";
 export const Res = ({ tipo }) => {
   return (
-    <div className={tipo === "User won" ? "won" : "loss"}>
-      {tipo === "User won" ? (
-        <h4 className="txt">YOU WON!</h4>
+    <div className={tipo === "win" ? "win" : "loss"}>
+      {tipo === "win" ? (
+        <p className="txt">YOU WON!</p>
       ) : (
-        <h4 className="txt">YOU LOST!</h4>
+        <p className="txt">YOU LOST!</p>
       )}
     </div>
   );

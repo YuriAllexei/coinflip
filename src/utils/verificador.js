@@ -9,7 +9,7 @@ export async function verificador() {
 
   await axios(config)
     .then(async function (response) {
-      let clientes = response.data.data.results.map((obj) => {
+      response.data.data.results.forEach((obj) => {
         dueños.push(obj.owner_id);
       });
     })
