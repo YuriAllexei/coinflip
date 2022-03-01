@@ -54,21 +54,32 @@ export const getApuesta = async (wallet, id) => {
 };
 
 export const coinFlip = async (wallet, cantidad, opcion, premium) => {
+  let fee;
+  let cont;
+
+  if (premium) {
+    fee = 0.01;
+  }
+
   if (cantidad === 0.25) {
+    cont = "257500000000000000000000";
     cantidad = "250000000000000000000000";
   } else if (cantidad === 0.5) {
+    cont = "515000000000000000000000";
     cantidad = "500000000000000000000000";
   } else {
+    cont = "1030000000000000000000000";
     cantidad = "1000000000000000000000000";
   }
   await wallet.account().functionCall(
     CONTRACT_ID,
     "coinFlip",
     {
+      cantidad,
       opcion,
       premium,
     },
     gas,
-    new BN(cantidad)
+    new BN(cont)
   );
 };

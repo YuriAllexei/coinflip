@@ -36,8 +36,8 @@ body {
 }
 
 .decision {
-  width: 70px;
-  height: 30px;
+  width: fit-content;
+  height: fit-content;
   margin: 0px 10px 0px 10px;
   background-color: blueviolet;
   border: 2px solid white;
@@ -113,7 +113,7 @@ p.space2 {
 }
 
 .verify {
-  width: 200px;
+  width: fit-content;
   height: fit-content;
   padding-top: 3px;
   padding-bottom: 3px;

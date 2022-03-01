@@ -18,7 +18,7 @@ export const Bet = ({ sign, setSign }) => {
 
   const navigate = useNavigate();
   const [wallet, setWallet] = useState();
-  const [premium, setpremium] = useState(null);
+  const [premium, setpremium] = useState(false);
   const [accountId, setAccountId] = useState();
 
   const [balance, setBalance] = useState(0.0);
@@ -103,7 +103,7 @@ export const Bet = ({ sign, setSign }) => {
           <div className=" title">
             <p className="texto title">{`Bienvenido ${accountId}!`}</p>
           </div>
-          <div>
+          <div className="center">
             {apuestaAvail !== "ND" ? (
               <Res tipo={apuestaAvail} />
             ) : (
@@ -194,6 +194,7 @@ export const Bet = ({ sign, setSign }) => {
                 if (wallet.isSignedIn()) {
                   if (premium === null) {
                     let dueños = await verificador();
+                    console.log(dueños);
                     dueños.includes(accountId)
                       ? setpremium(true)
                       : setpremium(false);

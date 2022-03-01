@@ -1,14 +1,14 @@
 .win {
   border: 2px solid white;
   width: 200px;
-  height: 60px;
+  height: fit-content;
   background-color: greenyellow;
 }
 
 .loss {
   border: 2px solid gray;
   width: 200px;
-  height: 60px;
+  height: fit-content;
   background-color: crimson;
   text-align: center;
 }
